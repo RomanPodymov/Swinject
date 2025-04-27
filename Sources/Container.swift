@@ -266,6 +266,39 @@ extension Container: _Resolver {
         }
     }
 
+    @available(iOS 13.0, *)
+    // swiftlint:disable:next identifier_name
+    public func _resolveAsync<Service, Arguments>(
+        name: String?,
+        option: ServiceKeyOption? = nil,
+        invoker: @escaping ((Arguments) async -> Any) -> Any
+    ) async -> Service? {
+        var resolvedInstance: Service?
+        let key = ServiceKey(serviceType: Service.self, argumentsType: Arguments.self, name: name, option: option)
+
+        if key == Self.graphIdentifierKey {
+            return currentObjectGraph as? Service
+        }
+
+        if let entry = getEntry(for: key) {
+            resolvedInstance = await resolveAsync(entry: entry, invoker: invoker)
+        }
+
+        if resolvedInstance == nil {
+            resolvedInstance = await resolveAsWrapperAsync(name: name, option: option, invoker: invoker)
+        }
+
+        if resolvedInstance == nil {
+            debugHelper.resolutionFailed(
+                serviceType: Service.self,
+                key: key,
+                availableRegistrations: getRegistrations()
+            )
+        }
+
+        return resolvedInstance
+    }
+    
     fileprivate func resolveAsWrapper<Wrapper, Arguments>(
         name: String?,
         option: ServiceKeyOption?,
@@ -295,6 +328,34 @@ extension Container: _Resolver {
         }
     }
 
+    @available(iOS 13.0, *)
+    fileprivate func resolveAsWrapperAsync<Wrapper, Arguments>(
+        name: String?,
+        option: ServiceKeyOption?,
+        invoker: @escaping ((Arguments) async -> Any) -> Any
+    ) async -> Wrapper? {
+        guard let wrapper = Wrapper.self as? InstanceWrapperAsync.Type else { return nil }
+
+        let key = ServiceKey(
+            serviceType: wrapper.wrappedType, argumentsType: Arguments.self, name: name, option: option
+        )
+
+        if let entry = getEntry(for: key) {
+            let factory = { [weak self] (graphIdentifier: GraphIdentifier?) async -> Any? in
+                guard let self else { return nil }
+                let originGraph = self.currentObjectGraph
+                defer { originGraph.map { self.restoreObjectGraph($0) } }
+                if let graphIdentifier = graphIdentifier {
+                    self.restoreObjectGraph(graphIdentifier)
+                }
+                return await self.resolveAsync(entry: entry, invoker: invoker) as Any?
+            }
+            return await wrapper.init(inContainer: self, withInstanceFactory: factory) as? Wrapper
+        } else {
+            return await wrapper.init(inContainer: self, withInstanceFactory: nil) as? Wrapper
+        }
+    }
+    
     fileprivate func getRegistrations() -> [ServiceKey: ServiceEntryProtocol] {
         var registrations = parent?.getRegistrations() ?? [:]
         services.forEach { key, value in registrations[key] = value }
@@ -394,6 +455,38 @@ extension Container: Resolver {
         return resolvedInstance as? Service
     }
 
+    @available(iOS 13.0, *)
+    fileprivate func resolveAsync<Service, Factory>(
+        entry: ServiceEntryProtocol,
+        invoker: @escaping (Factory) async -> Any
+    ) async -> Service? {
+        self.incrementResolutionDepth()
+        defer { self.decrementResolutionDepth() }
+
+        guard let currentObjectGraph = self.currentObjectGraph else {
+            fatalError("If accessing container from multiple threads, make sure to use a synchronized resolver.")
+        }
+
+        if let persistedInstance = self.persistedInstance(Service.self, from: entry, in: currentObjectGraph) {
+            return persistedInstance
+        }
+
+        let resolvedInstance = await invoker(entry.factory as! Factory)
+        if let persistedInstance = self.persistedInstance(Service.self, from: entry, in: currentObjectGraph) {
+            // An instance for the key might be added by the factory invocation.
+            return persistedInstance
+        }
+        entry.storage.setInstance(resolvedInstance as Any, inGraph: currentObjectGraph)
+        graphInstancesInFlight.append(entry)
+
+        if let completed = entry.initCompleted as? (Resolver, Any) -> Void,
+           let resolvedInstance = resolvedInstance as? Service {
+            completed(self, resolvedInstance)
+        }
+
+        return resolvedInstance as? Service
+    }
+    
     private func persistedInstance<Service>(
         _: Service.Type, from entry: ServiceEntryProtocol, in graph: GraphIdentifier
     ) -> Service? {

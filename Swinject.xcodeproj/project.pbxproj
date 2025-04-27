@@ -53,6 +53,10 @@
 		2D9218F1639E2298778A9539 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = A982F3108666D12EA0810D52 /* .swiftlint.yml */; };
 		2E533A7E458D3EB2FFBE1586 /* ContainerTests.CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCE820EE05C206E34CEF068 /* ContainerTests.CustomStringConvertible.swift */; };
 		303FAEDDC56720EB793ABE64 /* ContainerTests.GraphCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A04FC6931B56743E4B7D63 /* ContainerTests.GraphCaching.swift */; };
+		30C3C01E2DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3C01D2DBE51D9003877C0 /* InstanceWrapperAsync.swift */; };
+		30C3C01F2DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3C01D2DBE51D9003877C0 /* InstanceWrapperAsync.swift */; };
+		30C3C0202DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3C01D2DBE51D9003877C0 /* InstanceWrapperAsync.swift */; };
+		30C3C0212DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C3C01D2DBE51D9003877C0 /* InstanceWrapperAsync.swift */; };
 		31C021202AAC21C893F790A9 /* ContainerTests.Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988A20A0815159E43C26CA46 /* ContainerTests.Behavior.swift */; };
 		3468E4E54CCE05659D01DA4F /* ServiceKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDBC7E5186CB36CD160D94 /* ServiceKeyTests.swift */; };
 		3533E2B0A0ABB853DA4A2381 /* WeakStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185C8B2BAF1CF29EB64159FC /* WeakStorageTests.swift */; };
@@ -309,6 +313,7 @@
 		2380F40FC2B9229F36B13679 /* LoadAwareAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadAwareAssembly.swift; sourceTree = "<group>"; };
 		28B6980B5294739C0656769C /* ServiceEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceEntryTests.swift; sourceTree = "<group>"; };
 		29EB588ED052D3BAF38AFBBE /* AssemblerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblerTests.swift; sourceTree = "<group>"; };
+		30C3C01D2DBE51D9003877C0 /* InstanceWrapperAsync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceWrapperAsync.swift; sourceTree = "<group>"; };
 		38BCCF3F950869BD1891F7A8 /* Swinject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swinject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		39924B830576F62A4B528A37 /* UnavailableItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnavailableItems.swift; sourceTree = "<group>"; };
 		3B7688D6F1E3466891D0582E /* InstanceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStorage.swift; sourceTree = "<group>"; };
@@ -488,6 +493,7 @@
 				5F7BC1C4169BB4382C6D3E1F /* Info.plist */,
 				3B7688D6F1E3466891D0582E /* InstanceStorage.swift */,
 				7101AB0DE88A5340F7EAAC04 /* InstanceWrapper.swift */,
+				30C3C01D2DBE51D9003877C0 /* InstanceWrapperAsync.swift */,
 				A79864FE285C06A91E006806 /* ObjectScope.Standard.swift */,
 				957AFDACC07687608E5E5F7E /* ObjectScope.swift */,
 				97ECAF79D15CCE41C49F4590 /* RecursiveLock.swift */,
@@ -842,6 +848,7 @@
 				06B6204600E208CA97750825 /* RecursiveLock.swift in Sources */,
 				5BB768EFEB4BA7D1D05B4DCC /* Resolver.swift in Sources */,
 				51F2541D2BC5A2EF003E3BCD /* ReadWriteLock.swift in Sources */,
+				30C3C01F2DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */,
 				3D86E87634E427DCE7A8CF81 /* ServiceEntry.TypeForwarding.swift in Sources */,
 				513BDFB32DCE5B048672C33D /* ServiceEntry.swift in Sources */,
 				51F254212BC5A2EF003E3BCD /* ThreadSafeDictionary.swift in Sources */,
@@ -1004,6 +1011,7 @@
 				C7A673429D2B735BAC18F58E /* RecursiveLock.swift in Sources */,
 				EE4786524E79B10DB36FDB11 /* Resolver.swift in Sources */,
 				51F2541E2BC5A2EF003E3BCD /* ReadWriteLock.swift in Sources */,
+				30C3C0212DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */,
 				54A3ED20B6A9506B9D514098 /* ServiceEntry.TypeForwarding.swift in Sources */,
 				1A2759577A52C96E28BB44F0 /* ServiceEntry.swift in Sources */,
 				51F254222BC5A2EF003E3BCD /* ThreadSafeDictionary.swift in Sources */,
@@ -1034,6 +1042,7 @@
 				48B5EC6BADDE7B88260ADE44 /* RecursiveLock.swift in Sources */,
 				9CD3F07823D2E64DD636E00A /* Resolver.swift in Sources */,
 				51F2541F2BC5A2EF003E3BCD /* ReadWriteLock.swift in Sources */,
+				30C3C0202DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */,
 				1845CF466289264A5BBC0CCE /* ServiceEntry.TypeForwarding.swift in Sources */,
 				35C9BCE88B6D6567760D7389 /* ServiceEntry.swift in Sources */,
 				51F254232BC5A2EF003E3BCD /* ThreadSafeDictionary.swift in Sources */,
@@ -1064,6 +1073,7 @@
 				8B9E356593059568E55F9B06 /* RecursiveLock.swift in Sources */,
 				96BA7CCC6AEC192CAD3054E1 /* Resolver.swift in Sources */,
 				51F2541C2BC5A2EF003E3BCD /* ReadWriteLock.swift in Sources */,
+				30C3C01E2DBE51D9003877C0 /* InstanceWrapperAsync.swift in Sources */,
 				1120EBEC146D1EDDCC29AB17 /* ServiceEntry.TypeForwarding.swift in Sources */,
 				808983B2AF095E481615029E /* ServiceEntry.swift in Sources */,
 				51F254202BC5A2EF003E3BCD /* ThreadSafeDictionary.swift in Sources */,
