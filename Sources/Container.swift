@@ -120,6 +120,16 @@ public final class Container {
         return _register(serviceType, factory: factory, name: name)
     }
 
+    @available(iOS 13.0, *)
+    @discardableResult
+    public func registerAsync<Service>(
+        _ serviceType: Service.Type,
+        name: String? = nil,
+        factory: @escaping (Resolver) async -> Service
+    ) async -> ServiceEntry<Service> {
+        return _registerAsync(serviceType, factory: factory, name: name)
+    }
+    
     /// This method is designed for the use to extend Swinject functionality.
     /// Do NOT use this method unless you intend to write an extension or plugin to Swinject framework.
     ///
@@ -158,6 +168,29 @@ public final class Container {
         }
     }
 
+    @discardableResult
+    // swiftlint:disable:next identifier_name
+    public func _registerAsync<Service, Arguments>(
+        _ serviceType: Service.Type,
+        factory: @escaping (Arguments) async -> Any,
+        name: String? = nil,
+        option: ServiceKeyOption? = nil
+    ) -> ServiceEntry<Service> {
+        let key = ServiceKey(serviceType: Service.self, argumentsType: Arguments.self, name: name, option: option)
+        let entry = ServiceEntry(
+            serviceType: serviceType,
+            argumentsType: Arguments.self,
+            factory: factory,
+            objectScope: defaultObjectScope
+        )
+        entry.container = self
+        services[key] = entry
+
+        behaviors.forEach { $0.container(self, didRegisterType: serviceType, toService: entry, withName: name) }
+
+        return entry
+    }
+    
     /// Returns a synchronized view of the container for thread safety.
     /// The returned container is ``Resolver`` type and is not the original container. Continuing to add more
     /// registrations after calling `synchronize()` will result in different graph scope.
