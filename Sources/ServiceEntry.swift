@@ -32,13 +32,13 @@ public final class ServiceEntry<Service>: ServiceEntryProtocol {
     internal var initCompleted: FunctionType? {
         guard !initCompletedActions.isEmpty else { return nil }
 
-        return { [weak self] (resolver: Resolver, service: Any) -> Void in
+        return /*{ [weak self] (resolver: Resolver, service: Any) -> Void in
             guard let strongSelf = self else { return }
             strongSelf.initCompletedActions.forEach { $0(resolver, service as! Service) }
-        }
+        }*/ nil
     }
 
-    internal init(serviceType: Service.Type, argumentsType: Any.Type, factory: FunctionType) {
+    internal init(serviceType: Service.Type, argumentsType: Any.Type, factory: @escaping FunctionType) {
         self.serviceType = serviceType
         self.argumentsType = argumentsType
         self.factory = factory
@@ -47,7 +47,7 @@ public final class ServiceEntry<Service>: ServiceEntryProtocol {
     internal convenience init(
         serviceType: Service.Type,
         argumentsType: Any.Type,
-        factory: FunctionType,
+        factory: @escaping FunctionType,
         objectScope: ObjectScope
     ) {
         self.init(serviceType: serviceType, argumentsType: argumentsType, factory: factory)

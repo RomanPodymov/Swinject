@@ -146,7 +146,9 @@ public final class Container {
             let entry = ServiceEntry(
                 serviceType: serviceType,
                 argumentsType: Arguments.self,
-                factory: factory,
+                factory: {
+                    factory($0 as! Arguments)
+                },
                 objectScope: defaultObjectScope
             )
             entry.container = self
