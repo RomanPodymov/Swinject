@@ -3,4 +3,4 @@
 //
 
 // Type alias to expect a closure.
-internal typealias FunctionType = (Resolver) -> Any
+internal typealias FunctionType = (Resolver, Any) -> Any

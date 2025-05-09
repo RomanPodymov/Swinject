@@ -7,7 +7,7 @@ import XCTest
 
 class ServiceEntryTests: XCTestCase {
     func testServiceEntryHasObjectScopeGraphAsDefault() {
-        let entry = ServiceEntry(serviceType: Int.self, argumentsType: Any.self, factory: { _ in 0 })
+        let entry = ServiceEntry(serviceType: Int.self, argumentsType: Any.self, factory: { _, _ in 0 })
         XCTAssert(entry.objectScope === ObjectScope.graph)
     }
 
@@ -15,7 +15,7 @@ class ServiceEntryTests: XCTestCase {
         let entry = ServiceEntry(
             serviceType: Int.self,
             argumentsType: Any.self,
-            factory: { _ in 0 },
+            factory: { _, _ in 0 },
             objectScope: .weak
         )
         XCTAssert(entry.objectScope === ObjectScope.weak)
